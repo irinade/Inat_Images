@@ -42,6 +42,10 @@ parser$add_argument("-d", "--day", default=NULL,
 parser$add_argument("-b", "--bounds", default=NULL,
                     help="A txt file with box of longitude (-180 to 180) and latitude (-90 to 90) see bounds.txt sample [default \"%(default)s\"]")
 
+# Added a place argument
+#parser$add_argument("-p", "--place", default=NULL,
+#                    help="Filter by iNat place ID. Excpect an ID, not text.")
+
 args <- parser$parse_args()
 
 #create image folder
@@ -64,6 +68,7 @@ obs <- sub("^(\\S*\\s+\\S+).*", "\\1", obs)
 # delete duplicated names
 obs <- unique(obs)
 
+
 # if argument "bounds" is used the next funcion reads the file
 if (!is.null(args$bounds)) {
   bounds <- paste0("./", args$bounds)
@@ -80,6 +85,7 @@ inat_data <- sapply(X = obs, FUN = function(x) {
       inat_out <- get_inat_obs(taxon_name = x,
                                maxresults = as.numeric(args$observations),
                                quality = NULL,
+                               #place_id = args$place,
                                year = args$year,
                                month = args$month,
                                day = args$day,
